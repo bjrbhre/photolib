@@ -1,0 +1,4 @@
+application:
+  name: <%= File.basename(File.expand_path('../.', __FILE__)) %>
+  version: '0.1.0'
+some_var: <%= ENV['SOME_VAR'] %>
