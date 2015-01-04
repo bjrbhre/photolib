@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'bundler/setup'
-Bundler.require(:default)
 
 require 'erb'
 require 'pathname'
 require 'yaml'
+
+APP_ENV = ENV['APP_ENV'] || :development
+Bundler.require(:default, APP_ENV)
 
 #=============================================================================#
 # Application setup:
@@ -22,7 +24,6 @@ module Application
 end
 
 begin
-
   # (1) root
   Application.root = Pathname.new(File.expand_path('../../.', __FILE__))
 

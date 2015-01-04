@@ -1,0 +1,13 @@
+common: &common
+  sessions:
+    default:
+     uri: <%= ENV['MONGODB_URL'] %>
+
+development:
+  <<: *common
+
+staging:
+  <<: *common
+
+production:
+  <<: *common
