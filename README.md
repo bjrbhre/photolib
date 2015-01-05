@@ -2,14 +2,28 @@ Photolib
 =================
 
 Application to manage multiple sources of photo libraries.
+
 **Purpose**
 
-+ index orignal images
-+ compute footprint of original image to detect duplicates
-+ create thumbnails of different sizes
-+ extract exif infos to organize /consolidate photo library
-+ index and search images
-+ enrich meta infos (image content, people, theme...)
++ [x] index original pictures on localhost
++ [x] extract exif infos
++ [x] compute file digest to be able to de-duplicate imports
++ [ ] import original pictures to library (de-duplicated)
++ [ ] organize library directory structure `"/#{year}/#{month}/#{day}"`
++ [ ] clean library filenames "#{timestamp}.#{digest}.#{format}"`
++ [ ] create thumbnails of different sizes
++ [ ] identical image detection
++ [ ] sync library with online storage
++ [ ] distribute library storage (localhost, online, backups)
++ [ ] index and import movies
++ [ ] search library
++ More meta infos
+    + [ ] albums / smart albums
+    + [ ] geolocation
+    + [ ] user input (views, likes, rating)
+    + [ ] image content, people
++ [ ] API to interact with library
++ [ ] import from online services (icloud, flickr, picasa, facebook...)
 
 
 ## Application Configuration
