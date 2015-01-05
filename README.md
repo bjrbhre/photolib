@@ -8,9 +8,10 @@ Application to manage multiple sources of photo libraries.
 + [x] index original pictures on localhost
 + [x] extract exif infos
 + [x] compute file digest to be able to de-duplicate imports
-+ [ ] import original pictures to library (de-duplicated)
-+ [ ] organize library directory structure `"/#{year}/#{month}/#{day}"`
-+ [ ] clean library filenames "#{timestamp}.#{digest}.#{format}"`
++ [x] import original pictures to library (de-duplicated)
++ [x] organize library directory structure `"/#{year}/#{month}/#{day}"`
++ [x] clean library filenames "#{timestamp}.#{digest}.#{format}"`
++ [x] missing files detection (indexed and imported)
 + [ ] create thumbnails of different sizes
 + [ ] identical image detection
 + [ ] sync library with online storage

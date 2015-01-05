@@ -7,7 +7,7 @@ namespace :db do
         # copy / paste from Rails::Mongoid::create_indexes
         next if model.index_options.empty?
         if model.embedded?
-          logger.info("MONGOID: Index ignored on: #{model}, please define in the root model.")
+          logger.info("MONGOID: Index ignored on embedded #{model}")
           nil
         else
           model.create_indexes

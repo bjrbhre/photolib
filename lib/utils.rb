@@ -9,6 +9,10 @@ module Utils
     Hash[h.map { |k, v| [k.to_sym, v] }]
   end
 
+  def self.file_extension(filename)
+    File.extname(filename).downcase.to_sym
+  end
+
   # LogFormatter
   class LogFormater < ::Logger::Formatter
     def call(severity, time, progname, msg)

@@ -4,9 +4,7 @@
 # - exif: exif meta informations stored as a hash
 # - md5: file hexdigest
 # - path: path to original filename when first indexed
-#
-# Indexes:
-# - filename: unique
+# - is_missing: flag set to true if file is reported missing
 #
 # Known exif entires:
 #   "ApertureValue"
@@ -79,6 +77,7 @@ module PictureBase
     field :captured_at, type: Time
     field :exif, type: Hash
     field :md5, type: String
+    field :is_missing, type: Boolean, default: false
     field :path, type: String
 
     after_initialize :set_computed_fields
@@ -90,9 +89,22 @@ module PictureBase
     captured_at.strftime(format) if captured_at
   end
 
+  def check_is_missing
+    update_attribute(:is_missing, !file_exist?)
+    is_missing
+  end
+
   def reset_computed_fields
     COMPUTED_FIELDS.each { |field| send("#{field}=", nil) }
     set_computed_fields
+  end
+
+  def file_exist?
+    path && File.exist?(absolute_path)
+  end
+
+  def absolute_path
+    File.expand_path(path)
   end
 
   #==========================================================================
@@ -102,7 +114,12 @@ module PictureBase
   private
 
   def path_is_absolute
-    File.expand_path(path) == path
+    absolute_path == path
+  end
+
+  def path_is_relative
+    # path does not start with /
+    path =~ /[^\/]/
   end
 
   def set_computed_fields
@@ -113,18 +130,18 @@ module PictureBase
     self.captured_at ||= Time.strptime(
       "#{exif['DateTimeOriginal']} #{self.class.default_time_zone}",
       '%Y:%m:%d %H:%M:%S %z'
-    ) if exif['DateTimeOriginal']
+    ) if exif && exif['DateTimeOriginal']
   end
 
   def set_exif
     self.exif ||= begin
       image = Magick::Image.read(path).first
       Hash[image.get_exif_by_entry]
-    end
+    end if file_exist?
   end
 
   def set_md5
-    self.md5 ||= Digest::MD5.hexdigest(File.read(path))
+    self.md5 ||= Digest::MD5.hexdigest(File.read(path)) if file_exist?
   end
 
   #==========================================================================

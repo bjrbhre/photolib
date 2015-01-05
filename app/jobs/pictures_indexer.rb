@@ -1,3 +1,5 @@
+require 'jobs/job_base'
+
 module Jobs
   #============================================================================
   # Jobs::PicturesIndexer
@@ -9,30 +11,15 @@ module Jobs
   # options:
   # - root_path: path to root directory for indexation of picture files
   #============================================================================
-  class PicturesIndexer
-    attr_accessor :config,
-                  :logger
-
-    def initialize(config = {})
-      init_config(config)
-      init_logger
-      logger.info("[initialize] #{IndexedPicture.count} document(s) indexed")
-    end
-
+  class PicturesIndexer < JobBase
     def perform(options = {})
-      update_config(options)
+      super(options)
+      logger.info("[initialize] #{IndexedPicture.count} pictures indexed")
+      logger.info('[process_matches] rebuild index') if rebuild_index
 
-      root_path = File.expand_path(config[:root_path])
-      logger.info("[perform] at [#{root_path}]")
+      process_matches
 
-      pattern = files_pattern(root_path)
-      logger.info("[perform] matching pattern [#{pattern}]")
-
-      matches = Dir.glob(pattern)
-      logger.info("[perform] #{matches.count} matches to process")
-
-      process_matches(matches)
-      logger.info("[perform] #{IndexedPicture.count} document(s) indexed")
+      logger.info("[perform] #{IndexedPicture.count} pictures indexed")
     end
 
     #==========================================================================
@@ -41,10 +28,13 @@ module Jobs
 
     private
 
-    def process_matches(matches)
-      logger.info('[process_matches] rebuild index') if rebuild_index
+    def process_matches
+      root_path = File.expand_path(config[:root_path])
+      matches = Dir.glob(files_pattern(root_path))
+      count = matches.count
+      logger.info("[process_matches] #{count} matches at [#{root_path}]")
 
-      progress_bar = Utils::ProgressBar.create(total: matches.count)
+      progress_bar = Utils::ProgressBar.create(total: count)
       matches.each do |filename|
         progress_bar.increment
         process_file(filename)
@@ -75,24 +65,6 @@ module Jobs
       file_extensions =  config[:file_extensions].map(&:upcase)
       file_extensions += config[:file_extensions].map(&:downcase)
       "#{root_path}/**/*.{#{file_extensions.join(',')}}"
-    end
-
-    #==========================================================================
-    # Init and Configuration
-    #==========================================================================
-    def init_config(options)
-      @config = Utils.convert_hash_with_symbols_as_key(
-        Application.config['jobs']['pictures_indexer']
-        .merge(options)
-      )
-    end
-
-    def update_config(options)
-      @config.merge!(Utils.convert_hash_with_symbols_as_key(options))
-    end
-
-    def init_logger
-      @logger = Utils.create_logger(self.class.name)
     end
 
     def rebuild_index

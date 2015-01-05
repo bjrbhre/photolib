@@ -1,3 +1,4 @@
-HOST:        'laptop'
-MONGODB_URL: <%= ENV['MONGODB_URL_BASE']+'/dev-bjrbhre-photolib' %>
-TZ:          '+0200'
+HOST:                        'laptop'
+MONGODB_URL:                 <%= ENV['MONGODB_URL_BASE']+'/dev-bjrbhre-photolib' %>
+TZ:                          '+0200'
+LIBRARIES_DEFAULT_ROOT_PATH: '~/Pictures/photolib'

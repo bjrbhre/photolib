@@ -10,5 +10,5 @@ begin
     require file unless base_models.include?(file)
   end
 
-  MODELS = [IndexedPicture]
+  MODELS = [IndexedPicture, ImportedPicture]
 end

@@ -12,9 +12,13 @@ jobs:
   pictures_indexer:
     file_extensions:
       - jpg
+      - png
 
 models:
-  host:
+  hosts:
     localhost: <%= ENV['HOST'] || 'localhost' %>
+  libraries:
+    default:
+      root_path: <%= ENV['LIBRARIES_DEFAULT_ROOT_PATH'] || "#{ENV['HOME']}/.photolib" %>
   pictures:
     default_time_zone: '<%= ENV['TZ'] || '+0000' %>'
