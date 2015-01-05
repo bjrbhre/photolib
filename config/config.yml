@@ -1,4 +1,20 @@
 application:
   name: <%= File.basename(File.expand_path('../.', __FILE__)) %>
   version: '0.1.0'
-some_var: <%= ENV['SOME_VAR'] %>
+
+utils:
+  progress_bar:
+    format: '%a %bᗧ%i %p%% %t'
+    progress_mark: ' '
+    remainder_mark: '･'
+
+jobs:
+  pictures_indexer:
+    file_extensions:
+      - jpg
+
+models:
+  host:
+    localhost: <%= ENV['HOST'] || 'localhost' %>
+  pictures:
+    default_time_zone: '<%= ENV['TZ'] || '+0000' %>'

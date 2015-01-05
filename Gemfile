@@ -2,6 +2,11 @@ source 'https://rubygems.org'
 ruby '2.1.3'
 
 gem 'rake', '~> 10.4.2'
+gem 'rmagick', '~> 2.13.4'
+gem 'ruby-progressbar', '~> 1.7.0'
+gem 'bson_ext'
+gem 'mongoid'
+gem 'activesupport'
 
 group :development do
   gem 'pry'

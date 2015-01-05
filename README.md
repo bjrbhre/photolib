@@ -1,11 +1,20 @@
-ruby-app-skeleton
+Photolib
 =================
 
-Skeleton for a simple ruby application.
+Application to manage multiple sources of photo libraries.
+**Purpose**
+
++ index orignal images
++ compute footprint of original image to detect duplicates
++ create thumbnails of different sizes
++ extract exif infos to organize /consolidate photo library
++ index and search images
++ enrich meta infos (image content, people, theme...)
+
 
 ## Application Configuration
 
-`Application` is configured by `environment.rb`.
+`Application` is configured by `application.rb`.
 
 ### config.yml
 
@@ -38,5 +47,5 @@ Scripts in `config/initializers` are executed at the end application setup.
 
 `Rakefile` sets up basics for `rake` tasks.
 Any `*.rake` file in `lib/**/tasks` is loaded into rake.
-`Rakefile` also provides a `:environment` task which provides a context
+`Rakefile` also provides a `setup:application` task which provides a context
 in which application is set up (config, access to models...).

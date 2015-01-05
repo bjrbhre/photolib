@@ -1,1 +1,3 @@
-SOME_VAR: __some_value__
+HOST:        'laptop'
+MONGODB_URL: <%= ENV['MONGODB_URL_BASE']+'/dev-bjrbhre-photolib' %>
+TZ:          '+0200'
