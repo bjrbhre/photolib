@@ -121,7 +121,7 @@ do
   if [ "$extension" = 'jpg' -o "$extension" = 'jpeg' ]
   then
     cp -p "$filename" $TMP_LIBDIR_PICTURES/$checksum.jpg
-  elif [ "$extension" = 'mov' -o "$extension" = 'mp4' ]
+  elif [ "$extension" = 'avi' -o "$extension" = 'mov' -o "$extension" = 'mp4' ]
   then
     cp -p "$filename" $TMP_LIBDIR_MOVIES/$checksum.$extension
   else
@@ -139,7 +139,13 @@ exiftool \
 # move TMP_LIBDIR_PICTURES files with no timestamp in dedicated folder
 mv $TMP_LIBDIR_PICTURES/*.jpg $TMP_LIBDIR_PICTURES_NO_TS
 
-# organise TMP_LIBDIR_MOVIES (MOV) files by year/month/date
+# organise TMP_LIBDIR_MOVIES (AVI / MOV / MP4) files by year/month/date
+exiftool \
+  -if '$datetimeoriginal and $filetype eq "AVI"' \
+  -d '%%d/%Y/%m/%d/%Y-%m-%dT%H%M%S.%%f.%%e' \
+  '-filename<datetimeoriginal' \
+  -r $TMP_LIBDIR_MOVIES
+
 exiftool \
   -if '$mediacreatedate and ($filetype eq "MOV" or $filetype eq "MP4")' \
   -d '%%d/%Y/%m/%d/%Y-%m-%dT%H%M%S.%%f.%%e' \
@@ -147,7 +153,10 @@ exiftool \
   -r $TMP_LIBDIR_MOVIES
 
 # move TMP_LIBDIR_MOVIES files with no timestamp in dedicated folder
-mv $TMP_LIBDIR_MOVIES/*.mov $TMP_LIBDIR_MOVIES/*.mp4 $TMP_LIBDIR_MOVIES_NO_TS
+mv $TMP_LIBDIR_MOVIES/*.avi \
+   $TMP_LIBDIR_MOVIES/*.mov \
+   $TMP_LIBDIR_MOVIES/*.mp4 \
+   $TMP_LIBDIR_MOVIES_NO_TS
 
 # display consolidated tree
 [ -n "TREE" ] && $TREE $TMP_LIBDIR
