@@ -1,4 +1,7 @@
 #! /usr/bin/env bash
+
+set -e
+
 APP_NAME=$(basename $0 .sh)
 
 usage() {
