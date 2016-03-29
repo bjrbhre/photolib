@@ -116,7 +116,7 @@ TREE=$(which tree 2>/dev/null)
 find "$INPUT_DIR" -type f | grep -v '.DS_Store' > $TMP_LISTING
 while read filename;
 do
-  checksum=$($MD5 -q "$filename")
+  checksum=$($MD5 "$filename" | cut -f1 -d' ')
   echo "$filename -> $checksum"
   base=$(basename "$filename")
   extension=$(echo "${base##*.}" | tr '[:upper:]' '[:lower:]')
